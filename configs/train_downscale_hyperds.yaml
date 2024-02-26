@@ -1,0 +1,134 @@
+exp_name: INFNet_fast_multi_var
+exp_parent_path: ./exp
+model_name: INF_Net
+dataset_name: DARS_INF_Downsacle_Dataset
+device: 'cuda'
+mode: train
+train_cfg:
+  with_gt: True
+  with_stn: True
+  with_h8: True
+  sample_mode: FAST
+  pred_data_path: 'cluster1:s3://pretrained_models/13_layer_2_frame/inference_results'
+  h8_data_path: 'cluster2:s3://satellite_data/Himawari8_FTP/China/split'
+  era5_data_path: 'cluster1:s3://era5_np_float32/'
+  w2k_data_path: '/mnt/petrelfs/liuzili/data/Weather2K/alltime'
+  data_file_arxiv_flag: True
+  data_file_arxiv:
+    train_files: '/mnt/petrelfs/liuzili/code/OBDS/arxiv_file_list/downscale/train_files.npy'
+    valid_files: '/mnt/petrelfs/liuzili/code/OBDS/arxiv_file_list/downscale/valid_files.npy'
+    test_files: '/mnt/petrelfs/liuzili/code/OBDS/arxiv_file_list/downscale/test_files.npy'
+  lon_range: [80., 136.]
+  lat_range: [18., 54.]
+  norm_path:
+    h8_norm_data_path: '/mnt/petrelfs/liuzili/code/OBDS/norm_data/mean_std_h8_china.npy'
+    pred_single_norm_path: '/mnt/petrelfs/liuzili/code/OBDS/norm_data/mean_std_single.json'
+  h8_channels: ['albedo_03', 'albedo_05', 'tbb_08', 'tbb_15']
+  pred_names: 
+      surface: ['u10', 'v10', 't2m', 'sp', 'tp1h']
+  margin_sample_num: 10
+  dx: 27000
+  dy: 27000
+  downscale_type: avgpool
+  input_resolution: 1
+  target_resolution: 0.25
+  h8_size: [720, 1120]
+  h8_downsample_scale: 5
+  pred_downsample_scale: 4
+  pred_size: [145, 225]
+  era5_size: [145, 225]
+  da_window_len: 1
+  pred_window_len: 1  # 起报时刻stride
+  h8_frame_num: 2
+  h8_sample_mode: 'nearest' #[detla_t: int, nearest: str, random: str]
+  forecast_ahead_list: [0,]
+  
+  train_time_span: ['2017-01-01 01:00:00', '2020-08-31 23:00:00']
+  valid_time_span: ['2020-09-01 01:00:00', '2020-12-31 23:00:00']
+  test_time_span: ['2021-01-01 01:00:00', '2021-08-31 23:00:00']
+  
+  batch_size: 4
+  num_epoch: 50
+
+  log:
+    log_step: 10
+    with_vis: True
+    with_path: 
+
+  num_workers: 4
+  resume: False
+
+  checkpoint:
+    save_epoch: 1
+    checkpoint_name: ~
+  loss_cfg:
+    name: 'MSELoss'
+    scale: 0.5
+  optimizer:
+    name: 'Adam'
+    lr: 0.0001
+  lr_schedule:
+    name: 'CosineAnnealingLR'
+    T_max: 5
+    eta_min: 0
+    verbose: True
+
+test_cfg:
+  resume: False
+  checkpoint_name: ~
+
+network:
+  decoder_type: MULTI_VAR # MULTI_BLOCK
+  dual_trans_cfg:
+    h8_backbone_cfg:
+      name: 'resnet18'
+      num_classes: ~
+      in_channels: 4
+      pretrained: False
+      out_keys: ['block2', 'block3', 'block4', 'block5', 'block6']
+    pred_sfc_backbone_cfg:
+      name: 'resnet18'
+      num_classes: ~
+      in_channels: 5
+      pretrained: False
+      out_keys: ['block2', 'block3', 'block4', 'block5', 'block6']
+    trans_cfg:
+      enc_in: 512
+      c_out: 512
+      d_model: 64
+      n_heads: 8
+      e_layers: 2
+      d_layers: 2
+      d_ff: 512
+      dropout: 0.5
+      activation: 'gelu'
+      output_attention: False
+    head_cfg:
+      name: 'PredictionHead'
+      in_channel: 512
+      feat_channels: [256, 128, 64, 64, 32]
+      out_channel: 5
+      img_size: [145, 225]
+      feat_size: [9, 14]
+  var_net_cfg:
+    token_num: 551
+    in_channel: 64
+    hidden_channel: 128
+  inf_net_cfg:
+    target_wh: [144, 224]  # ignore right edge point
+    out_keys: [block4]
+    out_channel: 5
+    inf_net_block4_cfg:
+      in_channel: 32
+      out_channel: 5
+      feat_channel: 64
+      FCDims: [64, 64, 64]
+      feat_wh: [9, 14]
+      out_wh: [144, 224]
+      sample_num: 10
+      
+
+
+
+
+                  

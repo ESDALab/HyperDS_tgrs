@@ -1,0 +1,91 @@
+exp_name: EDSR
+exp_parent_path: ./exp
+model_name: EDSR
+dataset_name: DARS_INF_Downsacle_Dataset
+device: 'cuda'
+mode: train
+train_cfg:
+  with_gt: True
+  with_h8: True
+  with_stn: True
+  sample_mode: FAST
+  pred_data_path: 'cluster1:s3://pretrained_models/13_layer_2_frame/inference_results'
+  h8_data_path: 'cluster1:s3://satellite_data/Himawari8_FTP/China/split'
+  era5_data_path: 'cluster1:s3://era5_np_float32/'
+  w2k_data_path: '/mnt/petrelfs/liuzili/data/Weather2K/alltime'
+  data_file_arxiv_flag: True
+  data_file_arxiv:
+    train_files: '/mnt/petrelfs/liuzili/code/OBDS/arxiv_file_list/downscale/train_files.npy'
+    valid_files: '/mnt/petrelfs/liuzili/code/OBDS/arxiv_file_list/downscale/valid_files.npy'
+    test_files: '/mnt/petrelfs/liuzili/code/OBDS/arxiv_file_list/downscale/test_files.npy'
+
+  lon_range: [80., 136.]
+  lat_range: [18., 54.]
+
+  norm_path:
+    h8_norm_data_path: '/mnt/petrelfs/liuzili/code/OBDS/norm_data/mean_std_h8_china.npy'
+    pred_single_norm_path: '/mnt/petrelfs/liuzili/code/OBDS/norm_data/mean_std_single.json'
+
+  h8_channels: ['albedo_03', 'albedo_05', 'tbb_08', 'tbb_15']
+  pred_names: 
+      surface: ['u10', 'v10', 't2m', 'sp', 'tp1h']
+
+  dx: 27000
+  dy: 27000
+  downscale_type: avgpool
+  input_resolution: 1
+  target_resolution: 0.25
+  h8_size: [720, 1120]
+  h8_downsample_scale: 5
+  pred_downsample_scale: 4
+  pred_size: [145, 225]
+  era5_size: [145, 225]
+  da_window_len: 1
+  pred_window_len: 1  # 起报时刻stride
+  h8_frame_num: 2
+  h8_sample_mode: 'nearest' #[detla_t: int, nearest: str, random: str]
+  forecast_ahead_list: [0,]
+  
+  train_time_span: ['2017-01-01 00:00:00', '2020-08-31 23:00:00']
+  valid_time_span: ['2020-09-01 00:00:00', '2020-12-31 23:00:00']
+  test_time_span: ['2021-01-01 00:00:00', '2021-08-31 23:00:00']
+  
+  batch_size: 128
+  num_epoch: 50
+
+  log:
+    log_step: 10
+    with_vis: True
+    with_path: 
+
+  num_workers: 4
+  resume: False
+
+  checkpoint:
+    save_epoch: 1
+    checkpoint_name: ~
+  loss_cfg:
+    name: 'MSELoss'
+    scale: 0.5
+  optimizer:
+    name: 'Adam'
+    lr: 0.0001
+  lr_schedule:
+    name: 'CosineAnnealingLR'
+    T_max: 5
+    eta_min: 0
+    verbose: True
+test_cfg:
+  resume: False
+  checkpoint_name: ~
+
+network:
+  h8_in_channel: 8
+  era5_in_channel: 5
+  upscale_factor: 4
+  
+
+
+
+
+                  
