@@ -1,12 +1,13 @@
 <div align="center">
     <h2>
-        Observation-Guided Meteorological Field Downscaling at Station Scale: A Benchmark and a New Method    
+        Deriving Accurate Surface Meteorological States at Arbitrary Locations via Observation-Guided Continous Neural Field Modeling   
     </h2>
 </div>
 
 
 
 [![license](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
+[![ieee](https://img.shields.io/badge/arXiv-2401.11960-b31b1b.svg)](https://ieeexplore.ieee.org/abstract/document/10643214/)
 [![arXiv](https://img.shields.io/badge/arXiv-2401.11960-b31b1b.svg)](https://arxiv.org/abs/2401.11960)
 
 <div align="center">
@@ -15,7 +16,7 @@
 
 ## Introduction
 
-This repository is the code implementation of the paper [Observation-Guided Meteorological Field Downscaling at Station Scale: A Benchmark and a New Method ](https://arxiv.org/abs/2401.11960).
+This repository is the code implementation of the paper [Deriving Accurate Surface Meteorological States at Arbitrary Locations via Observation-Guided Continous Neural Field Modeling](https://ieeexplore.ieee.org/abstract/document/10643214/).
 
 The current branch has been tested under PyTorch 2.x and CUDA 12.1, supports Python 3.7+, and is compatible with most CUDA versions.
 
