@@ -7,7 +7,7 @@
 
 
 [![license](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
-[![ieee](https://img.shields.io/badge/arXiv-2401.11960-b31b1b.svg)](https://ieeexplore.ieee.org/abstract/document/10643214/)
+
 [![arXiv](https://img.shields.io/badge/arXiv-2401.11960-b31b1b.svg)](https://arxiv.org/abs/2401.11960)
 
 <div align="center">
