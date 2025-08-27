@@ -61,11 +61,12 @@ _TODO_
 If you use the code or performance benchmarks of this project in your research, please refer to the bibtex below to cite.
 
 ```
-@article{liu2024observation,
-  title={Observation-Guided Meteorological Field Downscaling at Station Scale: A Benchmark and a New Method},
+@article{liu2024deriving,
+  title={Deriving accurate surface meteorological states at arbitrary locations via observation-guided continous neural field modeling},
   author={Liu, Zili and Chen, Hao and Bai, Lei and Li, Wenyuan and Chen, Keyan and Wang, Zhengyi and Ouyang, Wanli and Zou, Zhengxia and Shi, Zhenwei},
-  journal={arXiv preprint arXiv:2401.11960},
-  year={2024}
+  journal={IEEE Transactions on Geoscience and Remote Sensing},
+  year={2024},
+  publisher={IEEE}
 }
 }
 ```
